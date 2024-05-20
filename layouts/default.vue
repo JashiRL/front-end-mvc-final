@@ -1,11 +1,13 @@
 <template>
   <div style="background-color: aliceblue;">
-    <h1>{{ tittle }}</h1>
-    <p> amonos que aqui espantan</p>
+      <header> <!--aqui va el contenido principal--></header>
+      <footer></footer>
   </div>
 </template>
 
 <script>
+// import header from  '../components/header-general.vue'
+// import footer from '../components/footer-general.vue'
 export default {
   name: 'principal',
   data () {
