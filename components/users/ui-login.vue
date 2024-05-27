@@ -13,7 +13,7 @@
                     v-model="userEmail"
                     label="Email"
                     hint="example@email.com"
-                    color="green"
+                    color="#56B280"
                     :rules="[rules.required]"
                     outlined
                     clearable
@@ -23,7 +23,7 @@
                     :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                     v-model="userPassword"
                     label="Password"
-                    color="green"
+                    color="#56B280"
                     :type="showPass ? 'text' : 'password'"
                     :rules="[rules.required]"
                     @click:append="showPass = !showPass"
@@ -36,13 +36,14 @@
                 <v-btn
                     block
                     depressed
-                    color="green"
+                    color="#56B280"
                 >
-                    <span color="white">Log In</span>
+                    <span style="color: white;">Log In</span>
                 </v-btn>
             </v-card-actions>
             <v-card-text>
-                Don't have an account? Sign in
+                Don't have an account? 
+                <a style="color: #56B280">Sign in</a>
             </v-card-text>
             <v-card-actions>
                 <v-row>
@@ -51,7 +52,8 @@
                             block
                             outlined
                             depressed
-                            color="green"
+                            color="#56B280"
+                            class="mb-3"
                         >
                             <v-icon left>mdi-google</v-icon>
                             Log in with Google
@@ -60,7 +62,7 @@
                             block
                             outlined
                             depressed
-                            color="green"
+                            color="#56B280"
                         >
                             <v-icon left>mdi-microsoft</v-icon>
                             Log in with Microsoft
@@ -78,7 +80,7 @@ export default {
         return {
             showPass: false,
             rules: {
-                required: v => !!v || 'Field required'
+                required: value => !!value || 'Field required'
             }
         }
     }
