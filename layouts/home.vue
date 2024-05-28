@@ -1,0 +1,81 @@
+<template>
+    <v-app>
+        <v-app-bar 
+            app
+            elevation="4"
+            class="px-12"
+        >
+            <v-toolbar-title>
+                ACID POP
+            </v-toolbar-title>
+            <v-spacer />
+            <v-list color="transparent" class="d-flex justify-space-between py-0">
+                <v-list-item-group class="d-flex align-center">
+                    <v-list-item
+                        link
+                        v-for="(item, index) in navMenu"
+                        :key="index"
+                        :to="item.route"
+                        class="mx-2"
+                    >
+                        <v-list-item-title>{{item.title}}</v-list-item-title>
+                    </v-list-item>
+                </v-list-item-group>
+                <v-btn color="secondary" icon>
+                    <v-icon>mdi-account-outline</v-icon>
+                </v-btn>
+                <v-btn color="secondary" icon>
+                    <v-icon>mdi-cart-outline</v-icon>
+                </v-btn>
+            </v-list>
+        </v-app-bar>
+        <v-main>
+            <Nuxt />
+        </v-main>
+        <v-footer 
+            color="secondary" 
+            padless
+            class="px-12"
+        >
+            <v-col
+                cols="6"
+                class="white--text"
+            >
+                ACID POP {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+            </v-col>
+            <v-btn
+                v-for="link in 3"
+                :key="link"
+                color="white"
+                text
+                rounded
+                class="my-2"
+            >
+                Header link
+            </v-btn>
+            <v-col
+                class="text-center"
+                cols="6"
+                color="green"
+            >
+                
+            </v-col>
+        </v-footer>
+    </v-app>
+</template>
+
+<script>
+export default {
+    name: 'home',
+    data(){
+        return {
+            navMenu: [
+                {title: 'Discovery', route: 'discovery'},
+                {title: 'About', route: 'about'},
+                {title: 'Contact us', route: 'contact-us'}
+            ]
+        }
+    }
+}
+</script>
+
