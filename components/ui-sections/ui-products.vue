@@ -11,7 +11,7 @@
                 <v-item>
                     <v-card
                         height="260"
-                        
+                        color="secondary"
                     >
 
                     </v-card>
