@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar 
+        <v-app-bar
             app
             elevation="4"
             class="px-12"
@@ -16,18 +16,43 @@
                         v-for="(item, index) in navMenu"
                         :key="index"
                         :to="item.route"
-                        class="mx-2"
+                        class="mx-2 hidden-sm-and-down"
                     >
                         <v-list-item-title>{{item.title}}</v-list-item-title>
                     </v-list-item>
                 </v-list-item-group>
-                <v-btn color="secondary" icon>
-                    <v-icon>mdi-account-outline</v-icon>
-                </v-btn>
+                <v-menu
+                    origin="center center"
+                    transition="scale-transition"
+                    open-on-hover
+                    offset-y
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            v-bind="attrs"
+                            v-on="on"
+                            color="secondary"
+                            icon
+                        >
+                            <v-icon>mdi-account-outline</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                            v-for="(item, index) in userOptions"
+                            :key="index"
+                        >
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
                 <v-btn color="secondary" icon>
                     <v-icon>mdi-cart-outline</v-icon>
                 </v-btn>
             </v-list>
+
+        
+
         </v-app-bar>
         <v-main>
             <Nuxt />
@@ -73,6 +98,11 @@ export default {
                 {title: 'Discovery', route: 'discovery'},
                 {title: 'About', route: 'about'},
                 {title: 'Contact us', route: 'contact-us'}
+            ],
+            userOptions: [
+                {title: 'Yo'},
+                {title: 'Configuration'},
+                {title: 'Log Out'}
             ]
         }
     }

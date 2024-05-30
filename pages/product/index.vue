@@ -22,7 +22,7 @@
                         sm="4"
                         class="d-flex flex-column"
                     >
-                        <h6 class="text-h6">
+                        <h6 class="text-h6 pb-10">
                             $ { price }
                         </h6>
                         <v-text-field
@@ -45,7 +45,14 @@
                         sm="8"
                         class="d-flex flex-column"
                     >
-                        One time
+                        <v-select
+                            label="Talla"
+                            dense
+                            outlined
+                            class="py-10"
+                        >
+
+                        </v-select>
                         <v-btn
                             v-model="addToCart"
                             color="primary"
