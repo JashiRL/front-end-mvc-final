@@ -2,7 +2,7 @@
     <v-container>
         <div class="text-center pb-10">
             <h2 class="section-title py-4">Mi carrito</h2>
-            <a href="" class="">Regresar al inicio</a>
+            <a class="" @click="backToHome">Regresar al inicio</a>
         </div>
         <v-row>
             <v-col cols="12">
@@ -70,7 +70,7 @@
                 <v-btn
                     color="primary"
                     width="120"
-                    flat
+                    elevation="0"
                     
                 >
                     Pagar
@@ -141,6 +141,9 @@ export default {
         
     },
     methods: {
+        backToHome (){
+            this.$router.push('/home')
+        },
         addCount () {
             if(props.item.quantity < 10){
                 props.item.quantity += 1

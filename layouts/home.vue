@@ -4,10 +4,8 @@
             app
             elevation="4"
             class="px-12"
-        >
-            <v-toolbar-title>
-                ACID POP
-            </v-toolbar-title>
+        >  
+            <img src="@/assets/img/acid-pop-dark.png" width="168" height="27" alt="" />
             <v-spacer />
             <v-list color="transparent" class="d-flex justify-space-between py-0">
                 <v-list-item-group class="d-flex align-center">
@@ -31,7 +29,7 @@
                         <v-btn
                             v-bind="attrs"
                             v-on="on"
-                            color="secondary"
+                            color="background"
                             icon
                         >
                             <v-icon>mdi-account-outline</v-icon>
@@ -46,7 +44,11 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-                <v-btn color="secondary" icon>
+                <v-btn 
+                    color="background" 
+                    icon
+                    @click="goToCart"
+                >
                     <v-icon>mdi-cart-outline</v-icon>
                 </v-btn>
             </v-list>
@@ -58,7 +60,7 @@
             <Nuxt />
         </v-main>
         <v-footer 
-            color="secondary" 
+            color="background" 
             padless
             class="px-12"
         >
@@ -104,6 +106,11 @@ export default {
                 {title: 'Configuration'},
                 {title: 'Log Out'}
             ]
+        }
+    },
+    methods: {
+        goToCart () {
+            this.$router.push('/my-cart')
         }
     }
 }
