@@ -1,5 +1,5 @@
 <template>
-    <v-card flat class="py-10">
+    <v-card width="348" flat class="py-10">
         <v-container>
             <h2 class="text-center">
                 Welcome to Acid Pop
@@ -68,18 +68,67 @@
                 </v-row>
             </v-card-actions>
         </v-container>
+        <!--Sign Up Dialog-->
         <v-dialog
             v-model="signupDialog"
-            width="400"
+            width="448"
             persistent
         >
-            <v-card>
+        <v-card width="448"  flat>
                 <v-btn
                     icon
                     @click="signupDialog=false"
                 >
                     <v-icon>mdi-window-close</v-icon>
                 </v-btn>
+                <v-container class="px-12">
+                    <h2 class="text-center pb-8">Crea una nueva cuenta</h2>
+                    <v-form>
+                        <v-text-field
+                            v-model="signupEmail"
+                            label="Correo electrónico"
+                            hint="example@email.com"
+                            outlined
+                        >
+                        </v-text-field>
+                        <v-text-field
+                            v-model="signupPassword"
+                            label="Nueva contraseña"
+                            color="primary"
+                            hint="Al menos 8 caracteres"
+                            :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
+                            :type="showPass ? 'text' : 'password'"
+                            :rules="[rules.required, rules.min]"
+                            @click:append="showPass = !showPass"
+                            outlined
+                            clearable
+                            counter
+                        >
+                        </v-text-field>
+                    </v-form>
+                    <v-checkbox v-model="checkTerms">
+                        <template v-slot:label>
+                            <div>
+                                Estoy de acuerdo con los
+                                <a href="">
+                                    Términos y condiciones
+                                </a>
+                            </div>
+                        </template>
+                    </v-checkbox>
+                    <v-card-actions>
+                        <v-btn
+                            color="primary"
+                            block
+                            depressed
+                            :disabled="!checkTerms"
+                            @click=""
+                        >
+                            <span style="color: white;">Sign up</span>
+                        </v-btn>
+                    </v-card-actions>
+
+                </v-container>
                 <h4 class="text-center text-h4">Create a new account</h4>
                 <v-form>
                     <v-text-field
@@ -141,11 +190,14 @@ export default {
             signupPassword: null,
             signupDialog: false,
             showPass: false,
+            checkTerms: false,
+
             snackbar: {
               show: false,
               message: "",
               color: "",
             },
+
             rules: {
                 required: value => !!value || 'Campo requerido',
                 min: v => (v && v.length >= 5) || 'Al menos 8 caracteres'
