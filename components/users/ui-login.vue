@@ -4,9 +4,6 @@
             <h2 class="text-center">
                 Welcome to Acid Pop
             </h2>
-            <v-card-text class="text-center">
-                Some additional text...
-            </v-card-text>
             <v-form>
                 <v-text-field
                     v-model="loginEmail"
@@ -36,7 +33,7 @@
                     color="primary"
                     block
                     depressed
-                    @click=""
+                    @click="loginUser"
                 >
                     <span style="color: white;">Log In</span>
                 </v-btn>
@@ -91,13 +88,12 @@
                         hint="example@email.com"
                         outlined
                     >
-
                     </v-text-field>
                     <v-text-field
                         v-model="signupPassword"
                         label="Password"
                         color="primary"
-                        hint="Al menos 8 caracteres"
+                        hint="Al menos 5 caracteres"
                         :append-icon="showPass ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="showPass ? 'text' : 'password'"
                         :rules="[rules.required, rules.min]"
@@ -113,13 +109,25 @@
                         color="primary"
                         block
                         depressed
-                        @click=""
+                        @click="addUser"
                     >
                     <span style="color: white;">Sign up</span>
                 </v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-snackbar
+        v-model="snackbar.show"
+        :color="snackbar.color"
+        top
+        right
+        timeout="3000"
+      >
+        {{ snackbar.message }}
+        <v-btn color="white" text @click="snackbar.show = false">
+          Close
+        </v-btn>
+      </v-snackbar>
     </v-card>
 </template>
 
@@ -127,13 +135,75 @@
 export default {
     data () {
         return {
+            loginEmail: null,
+            loginPassword: null,
+            signupEmail: null,
+            signupPassword: null,
             signupDialog: false,
             showPass: false,
+            snackbar: {
+              show: false,
+              message: "",
+              color: "",
+            },
             rules: {
                 required: value => !!value || 'Campo requerido',
-                min: v => (v && v.length >= 8) || 'Al menos 8 caracteres'
+                min: v => (v && v.length >= 5) || 'Al menos 8 caracteres'
             }
         }
+    },
+    methods: {
+      loginUser() {
+        const sendData = {
+          email: this.loginEmail,
+          password: this.loginPassword,
+        };
+        const url = "/login";
+        this.$axios
+          .post(url, sendData)
+          .then((res) => {
+            if (res.data.token) {
+              localStorage.setItem("token", res.data.token);
+              this.$router.push("/home");
+            }
+          })
+          .catch((err) => {
+            console.log("@@ err => ", err);
+            this.snackbar = {
+              show: true,
+              message: "Login failed. Please check your credentials.",
+              color: "red",
+            };
+          });
+      },
+      addUser () {
+          const sendData = {
+            id: Date.now().toString(),
+            email: this.signupEmail,
+            password: this.signupPassword
+          }
+          const url = '/signup'
+          this.$axios
+            .post(url, sendData)
+            .then((res) => {
+              if (res.data.message === "Usuario Registrado Satisfactoriamente") {
+                this.snackbar = {
+                  show: true,
+                  message: res.data.message,
+                  color: "green",
+                };
+                this.signupDialog = false;
+              }
+            })
+            .catch((err) => {
+              this.snackbar = {
+                show: true,
+                message: "Usuario no registrado, algo esta mal",
+                color: "red",
+              };
+              console.log('@@@ err => ', err)
+            })
+      }
     }
 }
 </script>
