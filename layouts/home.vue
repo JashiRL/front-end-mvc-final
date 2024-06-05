@@ -5,7 +5,14 @@
             elevation="4"
             class="px-12"
         >  
-            <img src="@/assets/img/acid-pop-dark.png" width="168" height="27" alt="" />
+            <img 
+                src="@/assets/img/acid-pop-dark.png" 
+                width="168" 
+                height="27" 
+                alt=""
+                class="img-logo" 
+                @click="goToHome"
+            />
             <v-spacer />
             <v-list color="transparent" class="d-flex justify-space-between py-0">
                 <v-list-item-group class="d-flex align-center">
@@ -22,7 +29,6 @@
                 <v-menu
                     origin="center center"
                     transition="scale-transition"
-                    open-on-hover
                     offset-y
                 >
                     <template v-slot:activator="{ on, attrs }">
@@ -39,8 +45,14 @@
                         <v-list-item
                             v-for="(item, index) in userOptions"
                             :key="index"
+                            link
                         >
-                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            <v-list-item-content>
+                                <div class="d-flex">
+                                    <v-icon left v-text="item.icon"></v-icon>
+                                    <v-list-item-title v-text="item.title"></v-list-item-title>
+                                </div>
+                            </v-list-item-content>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -52,9 +64,6 @@
                     <v-icon>mdi-cart-outline</v-icon>
                 </v-btn>
             </v-list>
-
-        
-
         </v-app-bar>
         <v-main>
             <Nuxt />
@@ -64,29 +73,39 @@
             padless
             class="px-12"
         >
-            <v-col
-                cols="6"
-                class="white--text"
-            >
-                ACID POP {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-            </v-col>
-            <v-btn
-                v-for="link in 3"
-                :key="link"
-                color="white"
-                text
-                rounded
-                class="my-2"
-            >
-                Header link
-            </v-btn>
-            <v-col
-                class="text-center"
-                cols="6"
-                color="green"
-            >
-                
-            </v-col>
+            <v-row class="mx-0 my-0">
+                <v-col
+                    cols="12"
+                    sm="6"
+                    class="d-flex align-center justify-center "
+                >
+                    <img 
+                        src="@/assets/img/acid-pop-light.png" 
+                        width="168" 
+                        height="27" 
+                        alt=""
+                        class="img-logo" 
+                        
+                        @click="goToHome"
+                    />
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="6"
+                    class="text-center"
+                >
+                <v-btn
+                    v-for="(item, index) in footerMenu"
+                    :key="index"
+                    color="white"
+                    text
+                    rounded
+                    class="my-2"
+                >
+                    {{ item.title }}
+                </v-btn>
+                </v-col>
+            </v-row>
         </v-footer>
     </v-app>
 </template>
@@ -97,22 +116,41 @@ export default {
     data(){
         return {
             navMenu: [
-                {title: 'Discovery', route: 'discovery'},
-                {title: 'About', route: 'about'},
-                {title: 'Contact us', route: 'contact-us'}
+                {title: 'Productos', route: 'discovery'},
+                {title: 'Opiniones', route: 'about'},
+                {title: 'Populares', route: 'contact-us'}
             ],
             userOptions: [
-                {title: 'Yo'},
-                {title: 'Configuration'},
-                {title: 'Log Out'}
+                { title: '', icon: '' },
+                { title: 'Mis pedidos', icon: 'mdi-package-variant', action: 'logout' },
+                { title: 'Editar cuenta', icon: 'mdi-account-cog-outline', action: 'logout' },
+                { title: 'Cerrar sesión', icon: 'mdi-logout', action: 'logout' }
+            ],
+            footerMenu: [
+                { title: 'Acerca de', },
+                { title: 'Contacto' },
+                { title: 'Términos'}
             ]
         }
     },
     methods: {
+        goToHome () {
+            this.$router.push('/home')
+        },
+
         goToCart () {
             this.$router.push('/my-cart')
+        },
+        logout () {
+            this.$router.push('/')
+            console.log('LOGOUT')
         }
     }
 }
 </script>
 
+<style>
+.img-logo:hover{
+    cursor: pointer;
+}
+</style>

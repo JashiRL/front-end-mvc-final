@@ -54,7 +54,7 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'http://localhost:6010/',
+    baseURL: '/',
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -66,7 +66,8 @@ export default {
         light: {
           primary: "#56B280",
           accent: "#7DE690", // colors.grey.darken3
-          secondary: "#7DE690",
+          secondary: "#EEEEEE",
+          secondary_txt: "#757575",
           background: "#272727",
           light_background: "#F2F2F2",
           info: colors.teal.lighten1,
