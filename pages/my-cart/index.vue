@@ -71,7 +71,7 @@
                     color="primary"
                     width="120"
                     elevation="0"
-                    
+                    @click="goToOrder"
                 >
                     Pagar
                 </v-btn>
@@ -153,6 +153,9 @@ export default {
             if(props.item.quantity > 1){
                 props.item.quantity -= 1
             }
+        },
+        goToOrder () {
+            this.$router.push('/my-cart/order')
         }
     }
 }

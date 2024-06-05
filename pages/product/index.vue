@@ -16,53 +16,50 @@
                 sm="6"
             >
                 <h4 class="text-h4">{ Shirt name }</h4>
-                <v-row>
-                    <v-col
-                        cols="12"
-                        sm="4"
-                        class="d-flex flex-column"
-                    >
-                        <h6 class="text-h6 pb-10">
-                            $ { price }
-                        </h6>
-                        <v-text-field
-                            v-model="shirtCount"
-                            type="number"
-                            prepend-inner-icon="mdi-plus"
-                            append-icon="mdi-minus"
-                            :rules="[rules.count]"
-                            hide-spin-buttons
-                            outlined
-                            dense
-                            readonly
-                            @click:prepend-inner="addCount"
-                            @click:append="reduceCount"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col
-                        cols="12"
-                        sm="8"
-                        class="d-flex flex-column"
-                    >
-                        <v-select
-                            label="Talla"
-                            dense
-                            outlined
-                            class="py-10"
-                        >
-
-                        </v-select>
-                        <v-btn
-                            v-model="addToCart"
-                            color="primary"
-                            depressed
-                        >
-                            <v-icon left>mdi-cart</v-icon>
-                            Añadir al carrito
-                        </v-btn>
-                    </v-col>
-                </v-row>
+                <h6 class="text-h6 pb-10">
+                    $ { price }
+                </h6>
+                <v-form>
+                    <v-row>
+                    
+                        <v-col cols="12">
+                            <span class="font-weight-medium">Talla: XG</span>
+                        </v-col>
+                        <v-col cols="12">
+                            <span class="font-weight-medium">Cantidad:</span>
+                        </v-col>
+                        <v-col cols="5" md="4" lg="3">
+                            <v-text-field
+                                v-model="shirtCount"
+                                type="number"
+                                prepend-inner-icon="mdi-plus"
+                                append-icon="mdi-minus"
+                                class="centered-input"
+                                :rules="[rules.count]"
+                                hide-spin-buttons
+                                outlined
+                                dense
+                                readonly
+                                @click:prepend-inner="addCount"
+                                @click:append="reduceCount"
+                            >
+                            </v-text-field>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-btn
+                                v-model="addToCart"
+                                color="primary"
+                                height="48"
+                                block
+                                depressed
+                            >
+                                <v-icon left>mdi-cart</v-icon>
+                                Añadir al carrito
+                            </v-btn>
+                        </v-col>
+                    
+                    </v-row>
+                </v-form>
             </v-col>
         </v-row>
     </v-container>
@@ -97,5 +94,9 @@ export default {
 <style>
 .text-h6{
     color: #56B280;
+}
+
+.centered-input input{
+    text-align: center;
 }
 </style>
