@@ -1,8 +1,8 @@
 <template>
     <v-container>
         <v-row>
-            <v-col cols="12">
-                <v-icon center>mdi-check</v-icon>
+            <v-col cols="12" class="text-center">
+                <img src="~/assets/img/check_circle.svg" alt="">
             </v-col>
             <v-col 
                 cols="12"

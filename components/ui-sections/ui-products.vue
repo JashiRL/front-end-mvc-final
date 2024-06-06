@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container class="py-10">
         <h2 class="section-title text-center">Products</h2>
         <p class="text-center">Ordena para ti o para tus seres queridos</p>
         <v-row class="products-container">
