@@ -34,10 +34,11 @@
                         <v-icon left color="primary">mdi-credit-card</v-icon>
                         <h3 class="text-left section-title">Tarjeta de crédito</h3>
                     </div>
-                    <v-form>
+                    <v-form v-model="paymentForm">
                         <v-row class="mx-0 my-0 px-4 py-4">
                             <v-col cols="12">
                                 <v-text-field
+                                    v-model="cardNumber"
                                     label="Número de tarjeta"
                                     outlined
                                     hide-details
@@ -46,6 +47,7 @@
                             </v-col>
                             <v-col cols="12">
                                 <v-text-field
+                                    v-model="cardTitular"
                                     label="Nombre del titular"
                                     outlined
                                     hide-details
@@ -54,6 +56,7 @@
                             </v-col>
                             <v-col cols="6">
                                 <v-text-field
+                                    v-model="cardExpDate"
                                     label="Expiración (MM/YY)"
                                     outlined
                                     hide-details
@@ -62,6 +65,7 @@
                             </v-col>
                             <v-col cols="6">
                                 <v-text-field
+                                    v-model="cardCvv"
                                     label="CVV"
                                     outlined
                                     hide-details
@@ -81,6 +85,7 @@
                     height="48"
                     elevation="0"
                     block
+                    :disabled="!paymentForm"
                     @click="$nuxt.$emit('changeStep', 5)"         
                 >
                     Finalizar
@@ -92,7 +97,10 @@
 
 <script>
 export default {
-
+    name: 'uiPayment',
+    data: () => ({
+        paymentForm: false
+    })
 }
 </script>
 

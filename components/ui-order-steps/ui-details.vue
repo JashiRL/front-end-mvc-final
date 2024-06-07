@@ -8,12 +8,13 @@
                 outlined
                 clearable
                 hide-details
+                :rules="[rules.required]"
             >
             </v-text-field>                    
         </div>
         <div class="text-left">
             <h2 class="section-title py-4">Dirección de entrega</h2>
-            <v-form>
+            <v-form v-model="detailsForm">
                 <v-row>
                     <v-col cols="12" sm="6">
                         <v-text-field
@@ -21,6 +22,7 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
@@ -30,6 +32,7 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
@@ -39,6 +42,7 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
@@ -48,6 +52,7 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
@@ -57,15 +62,18 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
                     <v-col cols="6" sm="4">
                         <v-text-field
+                            type="number"
                             label="Código Postal"
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required, rules.pc_min]"
                         >
                         </v-text-field>
                     </v-col>
@@ -75,6 +83,7 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
@@ -84,6 +93,7 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
@@ -100,6 +110,7 @@
                             height="48"
                             elevation="0"
                             block
+                            :disabled="!detailsForm"
                             @click="$nuxt.$emit('changeStep', 3)"
                         >
                             Ir a envío
@@ -114,6 +125,13 @@
 <script>
 export default {
     name: 'uiDetails',
+    data: () => ({
+        detailsForm: false,
+        rules: {
+            required: value => !!value || 'Campo requerido',
+            pc_min: v => (v && v.length >= 5) || 'Al menos 5 caracteres'
+        },
+    }), 
     methods: {
         goToCart () {
             this.$router.push('/my-cart')
