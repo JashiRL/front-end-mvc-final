@@ -1,9 +1,9 @@
 <template>
     <v-container>
         <ui-banner />
-        <ui-products />
-        <ui-testimonials />
-        <ui-popular />
+        <ui-products id="products" />
+        <ui-testimonials id="opinions" />
+        <ui-popular id="popular" />
     </v-container>
 </template>
 

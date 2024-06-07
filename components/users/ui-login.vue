@@ -87,7 +87,7 @@
             width="448"
             persistent
         >
-        <v-card width="448"  flat>
+            <v-card width="448"  flat>
                 <v-btn
                     icon
                     @click="signupDialog=false"
@@ -152,6 +152,10 @@
 export default {
     data () {
         return {
+            loginEmail: null,
+            loginPassword: null,
+            signupEmail: null,
+            signupPassword: null,
             signupDialog: false,
             showPass: false,
             checkTerms: false,
