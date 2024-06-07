@@ -1,8 +1,19 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  mode: 'universal', // or 'universal'
+  target: 'server',
+  router: {
+    mode: 'history',
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'product-details',
+        path: '/product/:productId',
+        component: resolve(__dirname, 'pages/product/_productId.vue')
+      });
+    }
+  },
+
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {

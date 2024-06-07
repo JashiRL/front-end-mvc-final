@@ -21,7 +21,7 @@
                 </h6>
                 <v-form>
                     <v-row>
-                    
+
                         <v-col cols="12">
                             <span class="font-weight-medium">Talla: XG</span>
                         </v-col>
@@ -57,7 +57,7 @@
                                 Añadir al carrito
                             </v-btn>
                         </v-col>
-                    
+
                     </v-row>
                 </v-form>
             </v-col>

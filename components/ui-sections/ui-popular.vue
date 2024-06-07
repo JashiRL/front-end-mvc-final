@@ -1,5 +1,5 @@
 <template>
-    <v-container class="py-10">
+    <v-container>
         <h2 class="section-title text-center">Popular</h2>
         <p class="text-center">Nuestros productos más vendidos</p>
         <v-row class="products-container">
