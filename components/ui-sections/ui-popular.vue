@@ -8,27 +8,29 @@
                 :key="index"
                 class="item-container"
             >
-                <v-item>
-                    <v-card  
-                        color=""
-                        class=""
-                    >
-                        <v-container class="px-4 pt-4">
-                            <img
-                                width="232"
-                                height="232"
-                                class="" 
-                                :src="item.img" 
-                                alt=""
-                            >
-                            <v-card-text class="bold">
-                                <h5 class="text-h5" >{{ item.name }}</h5>
-                                <h6 class="text-h6 item-price" >$ {{ item.price }}</h6>
-                            </v-card-text>
-                            
-                        </v-container>    
-                    </v-card>
-                </v-item>
+            <v-item-group>
+              <v-item>
+                <v-card  
+                      color=""
+                      class=""
+                  >
+                      <v-container class="px-4 pt-4">
+                          <img
+                              width="232"
+                              height="232"
+                              class="" 
+                              :src="item.img" 
+                              alt=""
+                          >
+                          <v-card-text class="bold">
+                              <h5 class="text-h5" >{{ item.name }}</h5>
+                              <h6 class="text-h6 item-price" >$ {{ item.price }}</h6>
+                          </v-card-text>
+                          
+                      </v-container>    
+                  </v-card>
+              </v-item>
+            </v-item-group>
             </v-col>
         </v-row>
     </v-container>

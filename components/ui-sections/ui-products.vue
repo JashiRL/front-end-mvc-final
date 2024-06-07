@@ -8,21 +8,23 @@
               :key="index"
               style="max-width: 300px; flex-basis: 300px; flex-grow: 1;"
           >
-              <v-item>
-                  <v-card
-                      height="400"
-                      color="transparent"
-                      @click="goToProductDetails(product.id)"
-                  >
-                      <v-img
-                          :src="require(`@/assets/img/products/${product.image}`)"
-                          height="300"
-                          contain
-                      ></v-img>
-                      <v-card-title class="text-center">{{ product.name }}</v-card-title>
-                      <v-card-subtitle class="text-center">${{ product.price }}</v-card-subtitle>
-                  </v-card>
-              </v-item>
+          <v-item-group>
+            <v-item>
+                <v-card
+                    height="400"
+                    color="transparent"
+                    @click="goToProductDetails(product.id)"
+                >
+                    <v-img
+                        :src="require(`@/assets/img/products/${product.image}`)"
+                        height="300"
+                        contain
+                    ></v-img>
+                    <v-card-title class="text-center">{{ product.name }}</v-card-title>
+                    <v-card-subtitle class="text-center">${{ product.price }}</v-card-subtitle>
+                </v-card>
+            </v-item>
+          </v-item-group>
           </v-col>
       </v-row>
   </v-container>
