@@ -39,10 +39,13 @@
                             <v-col cols="12">
                                 <v-text-field
                                     v-model="cardNumber"
+                                    type="number"
                                     label="Número de tarjeta"
                                     outlined
-                                    hide-details
+                                    hide-details="auto"
+                                    hide-spin-buttons
                                     clearable
+                                    :rules="[rules.required, rules.min_num]"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="12">
@@ -52,24 +55,57 @@
                                     outlined
                                     hide-details
                                     clearable
+                                    :rules="[rules.required]"
                                 ></v-text-field>
                             </v-col>
                             <v-col cols="6">
+                                <v-menu
+                                    v-model="dateMenu"
+                                    :close-on-content-click="false"
+                                    :nudge-right="40"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto"
+                                >
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field
+                                            v-model="computedDateFormatted"
+                                            label="Fecha de expiración"
+                                            hint="AA/MM"
+                                            prepend-inner-icon="mdi-calendar"
+                                            readonly
+                                            outlined
+                                            hide-details="auto"
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                        v-model="cardExpDate"
+                                        @input="dateMenu = false"
+                                    ></v-date-picker>
+                                </v-menu>
+                                <!--
                                 <v-text-field
                                     v-model="cardExpDate"
                                     label="Expiración (MM/YY)"
                                     outlined
                                     hide-details
                                     clearable
+                                    :rules="[rules.required]"
                                 ></v-text-field>
+                                -->
                             </v-col>
                             <v-col cols="6">
                                 <v-text-field
+                                    type="number"
                                     v-model="cardCvv"
                                     label="CVV"
                                     outlined
-                                    hide-details
+                                    hide-details="auto"
+                                    hide-spin-buttons
                                     clearable
+                                    :rules="[rules.required, rules.valid_cvv]"
                                 ></v-text-field>
                             </v-col>
                         </v-row>
@@ -98,9 +134,28 @@
 <script>
 export default {
     name: 'uiPayment',
-    data: () => ({
-        paymentForm: false
-    })
+    data: vm => ({
+        cardExpDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        paymentForm: false,
+        dateMenu: false,
+        rules: {
+            required: value => !!value || 'Campo requerido',
+            min_num: v => (v && (v.length > 15 && v.length < 17)) || 'Deben ser al menos 16 dígitos',
+            valid_cvv: v => (v && (v.length > 2 && v.length < 4)) || 'Deben ser 3 dígitos'
+        },
+    }),
+    computed: {
+        computedDateFormatted () {
+            return this.formatDate(this.cardExpDate)
+      },
+    },
+    methods: {
+        formatDate (date) {
+            if (!date) return null
+            const [year, month, day] = date.split('-')
+            return `${year}/${month}`
+      },
+    }
 }
 </script>
 

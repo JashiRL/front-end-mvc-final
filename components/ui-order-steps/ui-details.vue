@@ -52,9 +52,30 @@
                             outlined
                             clearable
                             hide-details
+                            :rules="[]"
+                        >
+                        </v-text-field>
+                    </v-col>
+                    <v-col cols="6" sm="12">
+                        <v-text-field
+                            label="País/Región"
+                            value="México"
+                            outlined
+                            hide-details
+                            readonly
                             :rules="[rules.required]"
                         >
                         </v-text-field>
+                    </v-col>
+                    <v-col cols="6" sm="4">
+                        <v-select
+                            label="Estado"
+                            outlined
+                            hide-details
+                            :items="mex_states"
+                            :rules="[rules.required]"
+                        >
+                        </v-select>
                     </v-col>
                     <v-col cols="6" sm="4">
                         <v-text-field
@@ -72,28 +93,9 @@
                             label="Código Postal"
                             outlined
                             clearable
-                            hide-details
+                            hide-details="auto"
+                            hide-spin-buttons
                             :rules="[rules.required, rules.pc_min]"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col cols="6" sm="4">
-                        <v-text-field
-                            label="Provincia"
-                            outlined
-                            clearable
-                            hide-details
-                            :rules="[rules.required]"
-                        >
-                        </v-text-field>
-                    </v-col>
-                    <v-col cols="6" sm="12">
-                        <v-text-field
-                            label="País/Región"
-                            outlined
-                            clearable
-                            hide-details
-                            :rules="[rules.required]"
                         >
                         </v-text-field>
                     </v-col>
@@ -127,6 +129,40 @@ export default {
     name: 'uiDetails',
     data: () => ({
         detailsForm: false,
+        mex_states: [
+            "Aguascalientes",
+            "Baja California",
+            "Baja California Sur",
+            "Campeche",
+            "Chiapas",
+            "Chihuahua",
+            "Coahuila",
+            "Colima",
+            "Ciudad de México",
+            "Durango",
+            "Guanajuato",
+            "Guerrero",
+            "Hidalgo",
+            "Jalisco",
+            "México",
+            "Michoacán",
+            "Morelos",
+            "Nayarit",
+            "Nuevo León",
+            "Oaxaca",
+            "Puebla",
+            "Querétaro",
+            "Quintana Roo",
+            "San Luis Potosí",
+            "Sinaloa",
+            "Sonora",
+            "Tabasco",
+            "Tamaulipas",
+            "Tlaxcala",
+            "Veracruz",
+            "Yucatán",
+            "Zacatecas"
+        ],
         rules: {
             required: value => !!value || 'Campo requerido',
             pc_min: v => (v && v.length >= 5) || 'Al menos 5 caracteres'

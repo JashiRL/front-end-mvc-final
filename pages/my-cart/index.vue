@@ -35,8 +35,7 @@
                                     append-icon="mdi-minus"
                                     single-line
                                     autofocus
-                                    
-                                    
+                                    hide-spin-buttons
                                     outlined
                                     dense
                                     
