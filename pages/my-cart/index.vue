@@ -20,8 +20,9 @@
               @save="save(props.item)"
               @cancel="cancel"
               @open="open"
-              @close="close"
+              @close="close" 
             >
+            
               <div>{{ props.item.quantity }}</div>
               <template v-slot:input>
                 <div class="mt-4">Editar cantidad</div>
