@@ -78,6 +78,23 @@ export default {
     }
   },
   methods: {
+    addItemToCart() {
+      const url = "http://localhost:6010/cart/add";
+            const sendData = {
+              productId: this.productId,
+              quantity: this.quantity,
+            };
+            this.$axios
+              .post(url, sendData)
+              .then((res) => {
+                if (res.data.message === "Item added to cart successfully") {
+                  this.showSnackbar(res.data.message, "green");
+                }
+              })
+              .catch((err) => {
+                this.showSnackbar("Item not available", "red");
+              });
+    },
     addCount() {
       if (this.shirtCount < 10) {
         this.shirtCount += 1;
@@ -89,19 +106,29 @@ export default {
       }
     },
     addToCart() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const productInCart = cart.find(item => item.id === this.product.id);
-      if (productInCart) {
-        productInCart.quantity += this.shirtCount;
-      } else {
-        cart.push({
-          ...this.product,
-          quantity: this.shirtCount
+      const productId = this.product.id;
+      const quantity = this.shirtCount;
+
+      // Check if the product is already in the cart
+      axios.get("http://localhost:6010/cart")
+        .then((res) => {
+          console.log('hell yeah')
+
+          const exists = res.items.productId === productId ? true : false;
+          console.log('hell yeah')
+          if (exists) {
+            // Product exists in cart, so update quantity
+            this.updateItemQuantity(productId, quantity);
+          } else {
+            // Product doesn't exist in cart, so add it
+            this.addItemToCart(productId, quantity);
+          }
+        })
+        .catch(error => {
+          console.error('Error checking cart:', error);
         });
-      }
-      localStorage.setItem('cart', JSON.stringify(cart));
-      this.$router.push('/my-cart');
-    }
+    },
+
   }
 };
 </script>
