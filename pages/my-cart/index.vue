@@ -17,7 +17,7 @@
               :return-value.sync="props.item.quantity"
               large
               persistent
-              @save="save"
+              @save="save(props.item)"
               @cancel="cancel"
               @open="open"
               @close="close"
@@ -42,7 +42,7 @@
             </v-edit-dialog>
           </template>
           <template v-slot:item.total="{ item }">
-            $ {{ item.price * item.quantity }}
+            $ {{ (parseFloat(item.price) * item.quantity).toFixed(2) }}
           </template>
           <template v-slot:item.actions="{ item }">
             <v-btn icon color="red" @click="removeFromCart(item)">
@@ -60,7 +60,7 @@
         >
           <div>
             <h6>Subtotal</h6>
-            <span>$ {{ subtotal }}</span>
+            <span>$ {{ subtotal.toFixed(2) }}</span>
           </div>
           <v-btn color="primary" width="120" elevation="0" @click="checkout">
             Pagar
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   layout: 'home',
   data() {
@@ -89,69 +91,115 @@ export default {
       }
     };
   },
-  created() {
-    if (process.client) {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      this.products = cart.map(product => ({
-        ...product,
-        total: product.price * product.quantity
-      }));
+  async created() {
+    try {
+      const token = localStorage.getItem('token');
+      const headers = { Authorization: `Bearer ${token}` };
+      const response = await axios.get('http://localhost:6010/cart', { headers });
+      const cartItems = response.data.cart.items;
+
+      const productPromises = cartItems.map(async item => {
+        const productResponse = await axios.get(`http://localhost:6010/product/${item.productId}`);
+        const product = productResponse.data;
+        return {
+          ...item,
+          price: parseFloat(product.price), // Fetch and parse the price from the product details
+          name: product.name, // Assuming the product name is also fetched
+          total: parseFloat(product.price) * item.quantity
+        };
+      });
+
+      this.products = await Promise.all(productPromises);
+    } catch (error) {
+      console.error('Error fetching cart or products:', error);
     }
   },
   methods: {
     backToHome() {
       this.$router.push('/home');
     },
-    addCount(item) {
+    async addCount(item) {
       if (item.quantity < 10) {
         item.quantity += 1;
-        this.updateCart();
+        await this.updateCartItem(item);
       }
     },
-    reduceCount(item) {
+    async reduceCount(item) {
       if (item.quantity > 1) {
         item.quantity -= 1;
-        this.updateCart();
+        await this.updateCartItem(item);
       }
     },
-    removeFromCart(item) {
-      this.products = this.products.filter(product => product.id !== item.id);
-      this.updateCart();
+    async removeFromCart(item) {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+        await axios.post('http://localhost:6010/cart/remove', { productId: item.productId }, { headers });
+        this.products = this.products.filter(product => product.productId !== item.productId);
+      } catch (error) {
+        console.error('Error removing item from cart:', error);
+      }
+    },
+    async updateCartItem(item) {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+        await axios.post('http://localhost:6010/cart/update', { productId: item.productId, quantity: item.quantity }, { headers });
+        this.updateCart();
+      } catch (error) {
+        console.error('Error updating cart item:', error);
+      }
     },
     updateCart() {
-      if (process.client) {
-        this.products.forEach(product => {
-          product.total = product.price * product.quantity;
-        });
-        localStorage.setItem('cart', JSON.stringify(this.products));
-      }
+      this.products.forEach(product => {
+        product.total = parseFloat(product.price) * product.quantity;
+      });
     },
-    checkout() {
+    async checkout() {
       console.log('Procesando pago...');
-      // Lógica para procesar el pago
+      // Add your checkout logic here
     },
     cancel() {
-      if (process.client) {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        this.products = cart;
-      }
+      this.fetchCart();
     },
-    save() {
-      this.updateCart();
+    save(item) {
+      this.updateCartItem(item);
     },
     open() {
       // Any necessary logic when opening the edit dialog
     },
     close() {
       // Any necessary logic when closing the edit dialog
+    },
+    async fetchCart() {
+      try {
+        const token = localStorage.getItem('token');
+        const headers = { Authorization: `Bearer ${token}` };
+        const response = await axios.get('http://localhost:6010/cart', { headers });
+        const cartItems = response.data.cart.items;
+
+        const productPromises = cartItems.map(async item => {
+          const productResponse = await axios.get(`http://localhost:6010/product/${item.productId}`);
+          const product = productResponse.data;
+          return {
+            ...item,
+            price: parseFloat(product.price), // Fetch and parse the price from the product details
+            name: product.name, // Assuming the product name is also fetched
+            total: parseFloat(product.price) * item.quantity
+          };
+        });
+
+        this.products = await Promise.all(productPromises);
+      } catch (error) {
+        console.error('Error fetching cart or products:', error);
+      }
     }
   },
   computed: {
     subtotal() {
-      return this.products.reduce(
-        (acc, curr) => acc + curr.price * curr.quantity,
-        0
-      );
+      return this.products.reduce((acc, curr) => {
+        return acc + (parseFloat(curr.price) * curr.quantity);
+      }, 0);
     }
   }
 };

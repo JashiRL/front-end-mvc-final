@@ -3,6 +3,7 @@
     <v-row class="mt-10">
       <v-col cols="12" sm="7">
         <v-img v-if="product" :src="require(`@/assets/img/products/${product.image}.jpg`)" height="550" width="550"></v-img>
+        <v-progress-circular v-else indeterminate color="primary"></v-progress-circular>
       </v-col>
       <v-col cols="12" sm="5">
         <h4 v-if="product" class="text-h4 mt-10">{{ product.name }}</h4>
@@ -27,16 +28,8 @@
             </v-text-field>
           </v-col>
           <v-col cols="12" sm="10" class="d-flex flex-column">
-            <v-select
-              v-if="product"
-              label="Talla"
-              dense
-              outlined
-              class="mt-4"
-              :items="[product.details]"
-            >
-            </v-select>
             <v-btn
+              :disabled="!product"
               color="primary"
               depressed
               class="mt-4 d-flex align-center justify-center"
@@ -70,30 +63,79 @@ export default {
   async created() {
     try {
       const productId = this.$route.params.productId;
-      const url = `http://localhost:6010/product/${productId}`
+      const url = `http://localhost:6010/product/${productId}`;
       const response = await axios.get(url);
       this.product = response.data;
     } catch (error) {
       console.error('Error fetching product details:', error);
+      this.showSnackbar('Error fetching product details', 'red');
     }
   },
   methods: {
-    addItemToCart() {
+    async addToCart() {
+      console.log(this.product, this.product.image)
+      // if (!this.product || !this.product.img) {
+      //   console.error('Product details are not loaded yet.');
+      //   this.showSnackbar('Product details are not loaded yet.', 'red');
+      //   return;
+      // }
+
+      const productId = this.product.image;
+      const quantity = this.shirtCount;
+
+      try {
+        const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+        const headers = { Authorization: `Bearer ${token}` };
+
+        // Check if the product is already in the cart
+        const cartResponse = await axios.get("http://localhost:6010/cart", { headers });
+        const cartItems = cartResponse.data.cart.items;
+
+        const existingItem = cartItems.find(item => item.productId === productId);
+
+        if (existingItem) {
+          // Product exists in cart, so update quantity
+          await this.updateItemQuantity(productId, quantity + existingItem.quantity);
+        } else {
+          // Product doesn't exist in cart, so add it
+          await this.addItemToCart(productId, quantity);
+        }
+
+        // this.showSnackbar('Item added to cart successfully', 'green');
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        // this.showSnackbar('Error adding item to cart', 'red');
+      }
+    },
+    async addItemToCart(productId, quantity) {
+      const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+      const headers = { Authorization: `Bearer ${token}` };
+
       const url = "http://localhost:6010/cart/add";
-            const sendData = {
-              productId: this.productId,
-              quantity: this.quantity,
-            };
-            this.$axios
-              .post(url, sendData)
-              .then((res) => {
-                if (res.data.message === "Item added to cart successfully") {
-                  this.showSnackbar(res.data.message, "green");
-                }
-              })
-              .catch((err) => {
-                this.showSnackbar("Item not available", "red");
-              });
+      const data = { productId, quantity };
+
+      try {
+        console.log(url, data, headers)
+        await axios.post(url, data, { headers });
+      } catch (error) {
+        console.error('Error adding item to cart: ', error);
+        console.log("aaaa")
+        // this.showSnackbar('Error adding item to cart', 'red');
+      }
+    },
+    async updateItemQuantity(productId, quantity) {
+      const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+      const headers = { Authorization: `Bearer ${token}` };
+
+      const url = "http://localhost:6010/cart/update";
+      const data = { productId, quantity };
+
+      try {
+        await axios.post(url, data, { headers });
+      } catch (error) {
+        console.error('Error updating item quantity:', error);
+        this.showSnackbar('Error updating item quantity', 'red');
+      }
     },
     addCount() {
       if (this.shirtCount < 10) {
@@ -105,30 +147,10 @@ export default {
         this.shirtCount -= 1;
       }
     },
-    addToCart() {
-      const productId = this.product.id;
-      const quantity = this.shirtCount;
-
-      // Check if the product is already in the cart
-      axios.get("http://localhost:6010/cart")
-        .then((res) => {
-          console.log('hell yeah')
-
-          const exists = res.items.productId === productId ? true : false;
-          console.log('hell yeah')
-          if (exists) {
-            // Product exists in cart, so update quantity
-            this.updateItemQuantity(productId, quantity);
-          } else {
-            // Product doesn't exist in cart, so add it
-            this.addItemToCart(productId, quantity);
-          }
-        })
-        .catch(error => {
-          console.error('Error checking cart:', error);
-        });
-    },
-
+    showSnackbar(message, color) {
+      // Implement your snackbar method here to show notifications
+      console.log(message, color);
+    }
   }
 };
 </script>
