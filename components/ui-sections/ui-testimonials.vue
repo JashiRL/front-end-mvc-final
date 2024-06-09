@@ -9,6 +9,7 @@
                 cols="12"
                 sm="4"
             >
+              <v-item-group>
                 <v-item>
                     <v-card
                         height="300"
@@ -16,7 +17,7 @@
 
                     </v-card>
                 </v-item>
-
+              </v-item-group>
             </v-col>
         </v-row>
     </v-container>

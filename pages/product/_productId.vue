@@ -2,13 +2,13 @@
   <v-container>
     <v-row class="mt-10">
       <v-col cols="12" sm="7">
-        <v-img :src="require(`@/assets/img/products/${product.image}`)" height="600" width="600"></v-img>
+        <v-img v-if="product" :src="require(`@/assets/img/products/${product.image}.jpg`)" height="550" width="550"></v-img>
       </v-col>
       <v-col cols="12" sm="5">
-        <h4 class="text-h4 mt-10">{{ product.name }}</h4>
+        <h4 v-if="product" class="text-h4 mt-10">{{ product.name }}</h4>
         <v-row class="mt-4">
           <v-col cols="12" sm="4" class="d-flex flex-column">
-            <h6 class="text-h6 pb-10 mt-4">
+            <h6 v-if="product" class="text-h6 pb-10 mt-4">
               $ {{ product.price }}
             </h6>
             <v-text-field
@@ -28,6 +28,7 @@
           </v-col>
           <v-col cols="12" sm="10" class="d-flex flex-column">
             <v-select
+              v-if="product"
               label="Talla"
               dense
               outlined
@@ -52,6 +53,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ProductDetails',
   layout: 'home',
@@ -67,19 +70,9 @@ export default {
   async created() {
     try {
       const productId = this.$route.params.productId;
-      const products = [
-        { id: 1, name: 'Pikachu 64', image: '1.jpg', price: '250.00', details: 'Talla: G' },
-        { id: 2, name: 'Self Love Ducks', image: '2.jpg', price: '200.00', details: 'Talla: M' },
-        { id: 3, name: 'Pochita', image: '3.jpg', price: '250.00', details: 'Talla: CH' },
-        { id: 4, name: 'GB Gengar', image: '4.jpg', price: '250.00', details: 'Talla: G' },
-        { id: 5, name: 'EVA OXXO', image: '5.jpg', price: '200.00', details: 'Talla: CH' },
-        { id: 6, name: 'Kirby Norteño', image: '6.jpg', price: '250.00', details: 'Talla: XG' },
-        { id: 7, name: 'Majoras Mask', image: '7.jpg', price: '250.00', details: 'Talla: M' },
-        { id: 8, name: 'Mi Hyliano Favorito', image: '8.jpg', price: '250.00', details: 'Talla: G' },
-        { id: 9, name: 'Team Rocket', image: '9.jpg', price: '250.00', details: 'Talla: G' },
-        { id: 10, name: 'Squirtle Squad', image: '10.jpg', price: '250.00', details: 'Talla: CH' }
-      ];
-      this.product = products.find(product => product.id === parseInt(productId));
+      const url = `http://localhost:6010/product/${productId}`
+      const response = await axios.get(url);
+      this.product = response.data;
     } catch (error) {
       console.error('Error fetching product details:', error);
     }
